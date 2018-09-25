@@ -1,5 +1,5 @@
 //
-//  Copyright © 2018 Owen Worley. All rights reserved.
+//  Copyright © 2018 Squareheads. All rights reserved.
 //
 
 import Foundation
@@ -70,3 +70,29 @@ func addTestXcode(to folder: TestFolder, version: String) {
         fatalError("Could not create test xcode files")
     }
 }
+
+func addTestProject(to folder: TestFolder, name: String) -> String {
+    let fileManager = FileManager.default
+    let outputPath = folder.path.appendingPathComponent("\(name).xcodeproj")
+
+    do {
+        try fileManager.createDirectory(at: outputPath, withIntermediateDirectories: true, attributes: nil)
+        return outputPath.path
+    } catch {
+        fatalError("Could not create test xcode files")
+    }
+}
+
+func addTestWorkspace(to folder: TestFolder, name: String) -> String {
+    let fileManager = FileManager.default
+    let outputPath = folder.path.appendingPathComponent("\(name).xcworkspace")
+
+
+    do {
+        try fileManager.createDirectory(at: outputPath, withIntermediateDirectories: true, attributes: nil)
+        return outputPath.path
+    } catch {
+        fatalError("Could not create test xcode files")
+    }
+}
+

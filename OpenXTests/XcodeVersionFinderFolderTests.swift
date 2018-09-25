@@ -1,5 +1,5 @@
 //
-//  Copyright © 2018 Owen Worley. All rights reserved.
+//  Copyright © 2018 Squareheads. All rights reserved.
 //
 
 import XCTest

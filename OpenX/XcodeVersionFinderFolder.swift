@@ -1,5 +1,5 @@
 //
-//  Copyright © 2018 Owen Worley. All rights reserved.
+//  Copyright © 2018 Squareheads. All rights reserved.
 //
 
 import Foundation
@@ -13,7 +13,7 @@ final class XcodeVersionFinderFolder {
         self.fileManager = FileManager.default
     }
 
-    func find() -> [XCodeVersion] {
+    func find() -> [XcodeVersion] {
 
         do {
             let versions = try fileManager.contentsOfDirectory(atPath: searchPath.path)
@@ -29,7 +29,7 @@ final class XcodeVersionFinderFolder {
         }
     }
 
-    private func containsXcode(subfolder: String) -> XCodeVersion? {
+    private func containsXcode(subfolder: String) -> XcodeVersion? {
         let absoluleFolder = self.searchPath.appendingPathComponent(subfolder, isDirectory: true)
         let binaryPath = absoluleFolder.appendingPathComponent("Contents", isDirectory: true).appendingPathComponent("MacOS", isDirectory: true).appendingPathComponent("Xcode", isDirectory: false)
         let versionPlistPath = absoluleFolder.appendingPathComponent("Contents", isDirectory: true).appendingPathComponent("version.plist", isDirectory: false)
@@ -44,7 +44,7 @@ final class XcodeVersionFinderFolder {
             return nil
         }
 
-        return XCodeVersion(version: versionString)
+        return XcodeVersion(version: versionString)
     }
 
     private func versionOfXcode(readFromPlistAtPath path: URL) -> String? {
