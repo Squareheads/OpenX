@@ -172,6 +172,9 @@
                                                 <size key="itemSize" width="50" height="50"/>
                                             </collectionViewFlowLayout>
                                             <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <connections>
+                                                <outlet property="dataSource" destination="5gI-5U-AMq" id="9mk-UM-wCi"/>
+                                            </connections>
                                         </collectionView>
                                     </subviews>
                                 </clipView>

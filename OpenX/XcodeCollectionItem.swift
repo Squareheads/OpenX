@@ -4,11 +4,22 @@
 
 import Cocoa
 
+protocol XcodeCollectionItemDelegate: class {
+    func didSelectXcodeItem(_ item: XcodeCollectionItem)
+}
+
 class XcodeCollectionItem: NSCollectionViewItem {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do view setup here.
+    weak var delegate: XcodeCollectionItemDelegate?
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        textField?.stringValue = ""
+        imageView?.image = nil
+        delegate = nil
     }
-    
+
+    override func mouseDown(with event: NSEvent) {
+        delegate?.didSelectXcodeItem(self)
+    }
 }

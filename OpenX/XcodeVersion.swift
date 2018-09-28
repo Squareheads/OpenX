@@ -7,4 +7,6 @@ import Foundation
 
 struct XcodeVersion {
     let version: String
+    let icon: URL?
+    let appPath: URL
 }

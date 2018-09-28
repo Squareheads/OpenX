@@ -47,24 +47,31 @@ func createTestFolder() -> TestFolder {
     return TestFolder(rootPath: cachesDirectory)
 }
 
-func addTestXcode(to folder: TestFolder, version: String) {
+func addTestXcode(to folder: TestFolder, version: String, icon: String? = nil) {
     let fileManager = FileManager.default
     let appPath = folder.path.appendingPathComponent("Xcode\(version).app", isDirectory: true)
     let contentsPath = appPath.appendingPathComponent("Contents", isDirectory: true)
     let macOSPath = contentsPath.appendingPathComponent("MacOS", isDirectory: true)
     let xcodeBinaryPath = macOSPath.appendingPathComponent("Xcode", isDirectory: false)
     let versionPlistPath = contentsPath.appendingPathComponent("version.plist", isDirectory: false)
+    let infoPlistPath = contentsPath.appendingPathComponent("Info.plist", isDirectory: false)
 
 
     let propertyListWithVersion = ["CFBundleShortVersionString":version]
+    let propertyListWithIcon = ["CFBundleIconFile":icon]
     let format = PropertyListSerialization.PropertyListFormat.xml
 
     do {
         try fileManager.createDirectory(at: macOSPath, withIntermediateDirectories: true, attributes: nil)
         let data = "Fake Xcode".data(using: .utf8)
         fileManager.createFile(atPath: xcodeBinaryPath.path, contents: data, attributes: nil)
-        let propertyListData = try PropertyListSerialization.data(fromPropertyList: propertyListWithVersion, format: format, options: PropertyListSerialization.WriteOptions())
-        try propertyListData.write(to: versionPlistPath)
+
+        let propertyListVersionData = try PropertyListSerialization.data(fromPropertyList: propertyListWithVersion, format: format, options: PropertyListSerialization.WriteOptions())
+        try propertyListVersionData.write(to: versionPlistPath)
+
+        let propertyListIconData = try PropertyListSerialization.data(fromPropertyList: propertyListWithIcon, format: format, options: PropertyListSerialization.WriteOptions())
+        try propertyListIconData.write(to: infoPlistPath)
+
 
     } catch {
         fatalError("Could not create test xcode files")
