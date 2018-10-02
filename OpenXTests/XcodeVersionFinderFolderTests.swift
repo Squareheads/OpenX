@@ -37,6 +37,29 @@ class XcodeVersionFinderFolderTests: XCTestCase {
         XCTAssertEqual(finder.find().first?.appPath, expectedAppPath)
     }
 
+    func testFinder_WithSingleFolderAndSymlink_ReturnsOneEntry() {
+
+        let testFolder = createTestFolder()
+        addTestXcode(to: testFolder, version: "9.0", icon: "Xcode")
+
+        try? FileManager.default.createSymbolicLink(at: testFolder.path.appendingPathComponent("symlinked.app", isDirectory: true), withDestinationURL: testFolder.path.appendingPathComponent("Xcode9.0.app", isDirectory: true))
+        let finder = XcodeVersionFinderFolder(searchPath: testFolder.path)
+
+        let expectedIconPath = testFolder.path
+            .appendingPathComponent("Xcode9.0.app", isDirectory: true)
+            .appendingPathComponent("Contents", isDirectory: true)
+            .appendingPathComponent("Resources", isDirectory: true)
+            .appendingPathComponent("Xcode.icns", isDirectory: false)
+
+        let expectedAppPath = testFolder.path
+            .appendingPathComponent("Xcode9.0.app", isDirectory: true)
+
+        XCTAssertEqual(finder.find().count, 1)
+        XCTAssertEqual(finder.find().first?.version, "9.0")
+        XCTAssertEqual(finder.find().first?.icon, expectedIconPath)
+        XCTAssertEqual(finder.find().first?.appPath, expectedAppPath)
+    }
+
     func testFinder_WithTwoFoldersFolder_ReturnsTwoEntries() {
 
         let testFolder = createTestFolder()

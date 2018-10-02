@@ -20,6 +20,9 @@ final class XcodeVersionFinderFolder {
                 .filter {
                     fileIsDir(path: searchPath.appendingPathComponent($0, isDirectory: true).path)
                 }
+                .filter {
+                    fileIsNotSymlink(path: searchPath.appendingPathComponent($0, isDirectory: true).path)
+                }
                 .compactMap {
                     containsXcode(subfolder: $0)
                 }
@@ -89,6 +92,18 @@ final class XcodeVersionFinderFolder {
 
     }
 
+    private func fileIsNotSymlink(path: String) -> Bool {
+        return !fileIsSymlink(path: path)
+    }
+
+    private func fileIsSymlink(path: String) -> Bool {
+
+        guard let attributes = try? fileManager.attributesOfItem(atPath: path) else { return false }
+        let value = attributes[FileAttributeKey.type] as? FileAttributeType
+        let isSymlink = value == .typeSymbolicLink
+        return isSymlink
+
+    }
     private func fileIsDir(path: String) -> Bool {
         var isDir: ObjCBool = false;
         fileManager.fileExists(atPath: path, isDirectory: &isDir)

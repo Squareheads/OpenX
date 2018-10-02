@@ -12,10 +12,7 @@ class Document: NSDocument {
 
     var exitFunction: (() -> Void) = Document.exitApp
     private let fileManager = FileManager.default
-
-    override class var autosavesInPlace: Bool {
-        return true
-    }
+    private var openedFilePath: URL?
 
     override var isEntireFileLoaded: Bool {
         return false
@@ -23,7 +20,12 @@ class Document: NSDocument {
 
     override func makeWindowControllers() {
         let storyboard = NSStoryboard(name: NSStoryboard.Name("Main"), bundle: nil)
-        let windowController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier("Document Window Controller")) as! NSWindowController
+        guard let windowController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier("Document Window Controller")) as? NSWindowController else {
+            fatalError("Could not create window")
+        }
+        if let viewController = windowController.contentViewController as? ViewController, let openedFilePath = openedFilePath {
+            viewController.openedFilePath = openedFilePath
+        }
         self.addWindowController(windowController)
     }
 
@@ -37,10 +39,7 @@ class Document: NSDocument {
         let fileURL = url
         guard fileURL.pathExtension == "xcodeproj" || fileURL.pathExtension == "xcworkspace" else { return exitFunction() }
         guard fileManager.fileExists(atPath: fileURL.path) else { return exitFunction() }
-        AppDelegate.GlobalFileBeingOpened = fileURL
-
+        openedFilePath = fileURL
     }
-
-
 }
 

@@ -85,6 +85,20 @@ class DocumentTests: XCTestCase {
         XCTAssertEqual(exitSpyCallCount, 0)
     }
 
+    func testOpenFiles_ExistentWorkspace_AssignsFileURLToViewController() {
+        let folder = createTestFolder()
+        let path = addTestWorkspace(to: folder, name: "testWorkspace")
+
+        let url = URL.init(fileURLWithPath: path)
+
+        try? document.read(from: url, ofType: "")
+        document.makeWindowControllers()
+        guard let windowController = document.windowControllers.first else { return XCTFail("No WindowController Created")}
+        guard let viewController = windowController.contentViewController as? ViewController else { return XCTFail("No ViewController created")}
+
+        XCTAssertEqual(viewController.openedFilePath?.path, path)
+    }
+
     func exitSpy() {
         exitSpyCallCount += 1
     }

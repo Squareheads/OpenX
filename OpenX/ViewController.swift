@@ -7,6 +7,7 @@ import Cocoa
 class ViewController: NSViewController {
 
     @IBOutlet weak var collectionView: NSCollectionView!
+    var openedFilePath: URL?
 
     lazy var xcodeVersions: [XcodeVersion] = {
         XcodeVersionFinderFolder(searchPath: URL(fileURLWithPath: "/Applications", isDirectory: true)).find()
@@ -16,8 +17,6 @@ class ViewController: NSViewController {
         super.viewDidLoad()
 
         configureCollectionView()
-
-        // Do any additional setup after loading the view.
     }
 
     override var representedObject: Any? {
@@ -49,7 +48,7 @@ extension ViewController : XcodeCollectionItemDelegate {
         let version = versions[indexPath.item]
 
 
-        if let fileToOpen = AppDelegate.GlobalFileBeingOpened {
+        if let fileToOpen = openedFilePath {
             if NSWorkspace.shared.openFile(fileToOpen.path, withApplication: version.appPath.path, andDeactivate: true) {
                 exit(0)
             } else {
