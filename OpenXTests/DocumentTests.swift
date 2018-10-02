@@ -5,15 +5,15 @@
 import XCTest
 @testable import OpenX
 
-class AppDelegateTests: XCTestCase {
+class DocumentTests: XCTestCase {
 
     private var exitSpyCallCount: Int = 0
-    private var appDelegate: AppDelegate!
+    private var document: Document!
 
     override func setUp() {
         super.setUp()
-        appDelegate = AppDelegate()
-        appDelegate.exitFunction = exitSpy
+        document = Document()
+        document.exitFunction = exitSpy
         exitSpyCallCount = 0
     }
 
@@ -23,15 +23,16 @@ class AppDelegateTests: XCTestCase {
     }
 
     func testOpenFiles_MissingExtension_ExitsApp() {
-
-        appDelegate.application(NSApplication.shared, openFiles: ["file"])
+        let url = URL.init(fileURLWithPath: "file")
+        try? document.read(from: url, ofType: "")
 
         XCTAssertEqual(exitSpyCallCount, 1)
     }
 
     func testOpenFiles_WrongExtension_ExitsApp() {
 
-        appDelegate.application(NSApplication.shared, openFiles: ["file.txt"])
+        let url = URL.init(fileURLWithPath: "file.txt")
+        try? document.read(from: url, ofType: "")
 
         XCTAssertEqual(exitSpyCallCount, 1)
     }
@@ -40,8 +41,9 @@ class AppDelegateTests: XCTestCase {
 
         let folder = createTestFolder()
         let path = folder.path.appendingPathComponent("test123project.xcodeproj").path
+        let url = URL.init(fileURLWithPath: path)
 
-        appDelegate.application(NSApplication.shared, openFiles: [path])
+        try? document.read(from: url, ofType: "")
 
         XCTAssertEqual(exitSpyCallCount, 1)
     }
@@ -51,7 +53,9 @@ class AppDelegateTests: XCTestCase {
         let folder = createTestFolder()
         let path = folder.path.appendingPathComponent("test456project.xcworkspace").path
 
-        appDelegate.application(NSApplication.shared, openFiles: [path])
+        let url = URL.init(fileURLWithPath: path)
+
+        try? document.read(from: url, ofType: "")
 
         XCTAssertEqual(exitSpyCallCount, 1)
     }
@@ -62,7 +66,9 @@ class AppDelegateTests: XCTestCase {
         let folder = createTestFolder()
         let path = addTestProject(to: folder, name: "testProject")
 
-        appDelegate.application(NSApplication.shared, openFiles: [path])
+        let url = URL.init(fileURLWithPath: path)
+
+        try? document.read(from: url, ofType: "")
 
         XCTAssertEqual(exitSpyCallCount, 0)
     }
@@ -72,7 +78,9 @@ class AppDelegateTests: XCTestCase {
         let folder = createTestFolder()
         let path = addTestWorkspace(to: folder, name: "testWorkspace")
 
-        appDelegate.application(NSApplication.shared, openFiles: [path])
+        let url = URL.init(fileURLWithPath: path)
+
+        try? document.read(from: url, ofType: "")
 
         XCTAssertEqual(exitSpyCallCount, 0)
     }

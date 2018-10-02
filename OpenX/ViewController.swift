@@ -8,7 +8,9 @@ class ViewController: NSViewController {
 
     @IBOutlet weak var collectionView: NSCollectionView!
 
-    private let xcodeFinder: XcodeVersionFinderFolder = XcodeVersionFinderFolder(searchPath: URL(fileURLWithPath: "/Applications", isDirectory: true))
+    lazy var xcodeVersions: [XcodeVersion] = {
+        XcodeVersionFinderFolder(searchPath: URL(fileURLWithPath: "/Applications", isDirectory: true)).find()
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +29,7 @@ class ViewController: NSViewController {
     private func configureCollectionView() {
 
         let flowLayout = NSCollectionViewFlowLayout()
-        flowLayout.itemSize = NSSize(width: 160.0, height: 140.0)
+        flowLayout.itemSize = NSSize(width: 128, height: 128)
         flowLayout.sectionInset = NSEdgeInsets(top: 10.0, left: 20.0, bottom: 10.0, right: 20.0)
         flowLayout.minimumInteritemSpacing = 20.0
         flowLayout.minimumLineSpacing = 20.0
@@ -41,11 +43,35 @@ class ViewController: NSViewController {
 
 extension ViewController : XcodeCollectionItemDelegate {
     func didSelectXcodeItem(_ item: XcodeCollectionItem) {
-        let versions = xcodeFinder.find()
+        let versions = xcodeVersions
         guard let indexPath = collectionView.indexPath(for: item) else { return }
         guard indexPath.item >= 0 && indexPath.item <= versions.count else { return }
         let version = versions[indexPath.item]
-        NSLog("Did select xcode version \(version.version)")
+
+
+        if let fileToOpen = AppDelegate.GlobalFileBeingOpened {
+            if NSWorkspace.shared.openFile(fileToOpen.path, withApplication: version.appPath.path, andDeactivate: true) {
+                exit(0)
+            } else {
+                dialogOK(message: "Error", informative: "Error running xcode \(version.version)")
+
+            }
+        } else {
+            if NSWorkspace.shared.launchApplication(version.appPath.path) {
+                exit(0)
+            } else {
+                dialogOK(message: "Error", informative: "Error running xcode \(version.version)")
+            }
+        }
+    }
+
+    func dialogOK(message: String, informative: String) {
+        let alert = NSAlert()
+        alert.messageText = message
+        alert.informativeText = informative
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
     }
 }
 
@@ -56,11 +82,11 @@ extension ViewController : NSCollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return xcodeFinder.find().count
+        return xcodeVersions.count
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        let xcodeVersion = xcodeFinder.find()[indexPath.item]
+        let xcodeVersion = xcodeVersions[indexPath.item]
         let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "XcodeCollectionItem"), for: indexPath as IndexPath)
         item.textField?.stringValue = xcodeVersion.version
 

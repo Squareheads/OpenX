@@ -23,6 +23,9 @@ final class XcodeVersionFinderFolder {
                 .compactMap {
                     containsXcode(subfolder: $0)
                 }
+                .sorted(by: { (first, second) -> Bool in
+                    return first.version.compare(second.version) == .orderedAscending
+                })
             return versions
         } catch {
             return []

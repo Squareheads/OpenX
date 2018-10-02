@@ -16,7 +16,7 @@
 		3C0844D1214FEAE9009BACEB /* XcodeVersionFinderFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B52262119B37A00832B31 /* XcodeVersionFinderFolder.swift */; };
 		3C0844D3214FF0DB009BACEB /* XcodeVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C0844D2214FF0DB009BACEB /* XcodeVersion.swift */; };
 		3C0EF497215A777500FB2E25 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C0EF496215A777500FB2E25 /* Document.swift */; };
-		3C0EF499215A812F00FB2E25 /* AppDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C0EF498215A812F00FB2E25 /* AppDelegateTests.swift */; };
+		3C0EF499215A812F00FB2E25 /* DocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C0EF498215A812F00FB2E25 /* DocumentTests.swift */; };
 		3C0EF49C215A944A00FB2E25 /* XcodeCollectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C0EF49A215A944A00FB2E25 /* XcodeCollectionItem.swift */; };
 		3C0EF49D215A944A00FB2E25 /* XcodeCollectionItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C0EF49B215A944A00FB2E25 /* XcodeCollectionItem.xib */; };
 /* End PBXBuildFile section */
@@ -45,7 +45,7 @@
 		3C0844CE214FEA70009BACEB /* FolderTestUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderTestUtilities.swift; sourceTree = "<group>"; };
 		3C0844D2214FF0DB009BACEB /* XcodeVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XcodeVersion.swift; sourceTree = "<group>"; };
 		3C0EF496215A777500FB2E25 /* Document.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
-		3C0EF498215A812F00FB2E25 /* AppDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateTests.swift; sourceTree = "<group>"; };
+		3C0EF498215A812F00FB2E25 /* DocumentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentTests.swift; sourceTree = "<group>"; };
 		3C0EF49A215A944A00FB2E25 /* XcodeCollectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XcodeCollectionItem.swift; sourceTree = "<group>"; };
 		3C0EF49B215A944A00FB2E25 /* XcodeCollectionItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = XcodeCollectionItem.xib; sourceTree = "<group>"; };
 		3C6B52262119B37A00832B31 /* XcodeVersionFinderFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XcodeVersionFinderFolder.swift; sourceTree = "<group>"; };
@@ -93,7 +93,7 @@
 				3C0844CE214FEA70009BACEB /* FolderTestUtilities.swift */,
 				3C0844CD214FEA70009BACEB /* XcodeVersionFinderFolderTests.swift */,
 				3C0844C6214FEA29009BACEB /* Info.plist */,
-				3C0EF498215A812F00FB2E25 /* AppDelegateTests.swift */,
+				3C0EF498215A812F00FB2E25 /* DocumentTests.swift */,
 			);
 			path = OpenXTests;
 			sourceTree = "<group>";
@@ -231,7 +231,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C0844D0214FEA70009BACEB /* FolderTestUtilities.swift in Sources */,
-				3C0EF499215A812F00FB2E25 /* AppDelegateTests.swift in Sources */,
+				3C0EF499215A812F00FB2E25 /* DocumentTests.swift in Sources */,
 				3C0844CF214FEA70009BACEB /* XcodeVersionFinderFolderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

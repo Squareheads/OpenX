@@ -75,4 +75,15 @@ class XcodeVersionFinderFolderTests: XCTestCase {
         XCTAssertEqual(finder.find()[1].appPath, expectedAppPathTwo)
 
     }
+
+
+    func testPerformance() {
+        let finder = XcodeVersionFinderFolder(searchPath: URL(fileURLWithPath: "/Applications"))
+        self.measure {
+            let results = finder.find()
+            XCTAssertGreaterThanOrEqual(results.count, 0)
+        }
+    }
+
+    
 }

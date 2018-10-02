@@ -6,17 +6,22 @@ import Cocoa
 
 class Document: NSDocument {
 
-    override init() {
-        super.init()
-        // Add your subclass-specific initialization here.
+    class func exitApp() {
+        exit(0)
     }
+
+    var exitFunction: (() -> Void) = Document.exitApp
+    private let fileManager = FileManager.default
 
     override class var autosavesInPlace: Bool {
         return true
     }
 
+    override var isEntireFileLoaded: Bool {
+        return false
+    }
+
     override func makeWindowControllers() {
-        // Returns the Storyboard that contains your Document window.
         let storyboard = NSStoryboard(name: NSStoryboard.Name("Main"), bundle: nil)
         let windowController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier("Document Window Controller")) as! NSWindowController
         self.addWindowController(windowController)
@@ -28,11 +33,12 @@ class Document: NSDocument {
         throw NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
     }
 
-    override func read(from data: Data, ofType typeName: String) throws {
-        // Insert code here to read your document from the given data of the specified type, throwing an error in case of failure.
-        // Alternatively, you could remove this method and override read(from:ofType:) instead.
-        // If you do, you should also override isEntireFileLoaded to return false if the contents are lazily loaded.
-        throw NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
+    override func read(from url: URL, ofType typeName: String) throws {
+        let fileURL = url
+        guard fileURL.pathExtension == "xcodeproj" || fileURL.pathExtension == "xcworkspace" else { return exitFunction() }
+        guard fileManager.fileExists(atPath: fileURL.path) else { return exitFunction() }
+        AppDelegate.GlobalFileBeingOpened = fileURL
+
     }
 
 
